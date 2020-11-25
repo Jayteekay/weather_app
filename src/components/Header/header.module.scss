@@ -1,5 +1,14 @@
 ._{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid: "logo search switch" auto / auto 1fr auto;
+    place-items: center;
+    >h4{
+        grid-area: logo;
+    }
+    &_searchContainer{
+        grid-area: search;
+    }
+    &_unitSwitch{
+        grid-area: switch;
+    }
 }

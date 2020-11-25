@@ -1,0 +1,19 @@
+._{
+    display: flex;
+    width: 7rem;
+    justify-content: space-between;
+    >button{
+        border-radius: 50%;
+        font-weight: bold;
+        box-shadow: var(--box-shadow);
+        height: 3rem;
+        width: 3rem;
+        transition: all 0.3s ease-out;
+        background-color: var(--white);
+    }
+    &_current{
+        background-color: var(--black) !important;
+        color: var(--white) !important;
+        box-shadow: none !important;
+    }
+}

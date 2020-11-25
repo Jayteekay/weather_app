@@ -7,11 +7,10 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(
   <React.StrictMode>
-    
     <Dashboard />
   </React.StrictMode>,
   document.getElementById('root')
 );
 
 serviceWorkerRegistration.register();
-reportWebVitals(console.log);
+reportWebVitals();
