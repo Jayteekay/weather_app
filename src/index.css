@@ -1,13 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --black: #222831;
+  --white: #fff;
+  --gray: #C4C4C4;
+  --gray-light: #E5E5E5;
+  --gray-lighter: #FCFCFC;
+  --gray-dark: #9E9E9E;
+  --red: #F05454;
+  --orange: #F0A500;
+  --hot: #F05454;
+  --warm: #FFD900;
+  --cold: #0085FF;
+  --hot-gradient: linear-gradient(154.6deg, #FFD6C9 2.33%, rgba(255, 255, 255, 0) 83.9%), #FFFFFF;
+  --cold-gradient: linear-gradient(154.6deg, #C9E5FF 2.33%, rgba(255, 255, 255, 0) 83.9%), #FFFFFF;
+  --warm-gradient: linear-gradient(154.6deg, #FFFDC9 2.33%, rgba(255, 255, 255, 0) 83.9%), #FFFFFF;
+  --box-shadow: 4px 4px 20px rgba(158, 158, 158, 0.2);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--gray-lighter);
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+button, input{
+  border: none;
+  outline: none;
+  padding: 1rem;
 }
