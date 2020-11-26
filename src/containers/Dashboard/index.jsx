@@ -4,14 +4,17 @@ import store from "../../redux";
 import Header from '../../components/Header';
 import styles from './dashboard.module.scss'
 import Body from '../Body';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
         <Provider store={store}>
-            <div data-testid="dashboard" className={styles._}>
-                <Header/>
-                <Body/>
-            </div>
+            <Router>
+                <div data-testid="dashboard" className={styles._}>
+                    <Header/>
+                    <Body/>
+                </div>
+            </Router>
         </Provider>
     );
 };

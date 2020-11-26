@@ -1,12 +1,19 @@
 ._{
     display: grid;
-    grid: "logo search switch" auto / auto 1fr auto;
+    grid: "logo" auto "search" auto "switch" auto / auto;
+    gap: 1rem;
     place-items: center;
+    @media (min-width: 768px){
+        grid: "logo search switch" auto / auto 1fr auto;
+    }
     >h4{
         grid-area: logo;
     }
     &_searchContainer{
         grid-area: search;
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
     &_unitSwitch{
         grid-area: switch;
