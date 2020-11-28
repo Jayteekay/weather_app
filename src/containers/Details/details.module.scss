@@ -1,14 +1,21 @@
 ._ {
   display: grid;
-  grid: "header header header actions" auto "details details notes notes" auto / 25% 25% 1fr auto;
   row-gap: 1rem;
   column-gap: 3rem;
   margin: 2rem auto;
-  max-width: 1200px;
+  grid: "header" auto "actions" auto "details" auto "notes" auto / 1fr;
+  @media (min-width: 768px){
+    grid: "header header header actions" auto "details details notes notes" auto / 25% 25% 1fr auto;
+    max-width: 1200px;
+  }
 
   &_header {
     grid-area: header;
     display: flex;
+    flex-direction: column;
+    @media (min-width: 768px){
+      flex-direction: row;
+    }
     > h1 {
       flex: 1;
       font-weight: normal;
@@ -35,6 +42,7 @@
       grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
       gap: 1rem;
       margin: 1rem 0;
+      place-items: center;
     }
   }
   &_notes {
