@@ -1,0 +1,51 @@
+._ {
+  display: grid;
+  grid: "header header header actions" auto "details details notes notes" auto / 25% 25% 1fr auto;
+  row-gap: 1rem;
+  column-gap: 3rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+
+  &_header {
+    grid-area: header;
+    display: flex;
+    > h1 {
+      flex: 1;
+      font-weight: normal;
+    }
+  }
+  &_actions {
+    grid-area: actions;
+    button {
+      font-size: 1rem;
+      border-radius: 1rem;
+      background: var(--gradient-button);
+      color: var(--white);
+      font-weight: 500;
+    }
+  }
+  &_details {
+    grid-area: details;
+    h5 {
+      color: var(--gray-dark);
+      font-weight: 500;
+    }
+    &--small {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+  }
+  &_notes {
+    grid-area: notes;
+    display: flex;
+    flex-direction: column;
+    &__container {
+      flex: 1;
+      display: grid;
+      grid-auto-rows: min-content;
+      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    }
+  }
+}

@@ -1,0 +1,29 @@
+._ {
+  height: min-content;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  position: relative;
+  background: var(--gray-lighter);
+  &_delete {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25rem;
+  }
+  &:hover {
+    .__delete {
+      display: block;
+    }
+  }
+  textarea {
+    font-size: 1rem;
+    font-family: var(--font-family-inter);
+    resize: none;
+    overflow: auto;
+    padding: 0;
+    border: none !important;
+    outline: none !important;
+    background: var(--gray-lighter);
+  }
+}

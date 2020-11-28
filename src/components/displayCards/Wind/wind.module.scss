@@ -1,0 +1,17 @@
+._ {
+  padding: 1rem;
+  width: 9rem;
+  height: 6rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  color: var(--black);
+  svg {
+    margin: 0 0.5rem 0 0;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -3,42 +3,58 @@ const { Provider } = require("react-redux");
 const { BrowserRouter: Router } = require("react-router-dom");
 const { default: ListSection } = require("..");
 const { default: store } = require("../../../redux");
+require("fake-indexeddb/auto");
 
-describe('ListSection', function() {
-    afterEach(cleanup);
-    it('should contain list title passed as prop', ()=>{
-        const title = "test_title";
-        render(<Provider store={store}><ListSection title={title}/></Provider>);
+jest.mock("../../../utils/asset-vectors-loader");
+jest.mock("../../../components/City");
 
-        expect(screen.queryByText(title)).toBeInTheDocument();
-    })
+describe("ListSection", function () {
+  afterEach(cleanup);
+  it("should contain list title passed as prop", () => {
+    const title = "test_title";
+    render(
+      <Provider store={store}>
+        <ListSection title={title} />
+      </Provider>
+    );
 
-    it('should contain list icon passed as prop', ()=>{
-        const icon = "test_icon";
-        render(<Provider store={store}><ListSection icon={icon}/></Provider>);
+    expect(screen.queryByText(title)).toBeInTheDocument();
+  });
 
-        expect(screen.queryByText(icon)).toBeInTheDocument();
-    })
+  it("should contain list icon passed as prop", () => {
+    const icon = "test_icon";
+    render(
+      <Provider store={store}>
+        <ListSection icon={icon} />
+      </Provider>
+    );
 
-    it('should contain list of cities passed as prop', ()=>{
-        const cities = [
-            {
-                id: 1,
-            },{
-                id: 2,
-            },{
-                id: 3,
-            },{
-                id: 4,
-            },
-        ];
-        render(<Provider store={store}>
-            <Router>
-            <ListSection cities={cities}/>
-            </Router>
-            </Provider>);
+    expect(screen.queryByText(icon)).toBeInTheDocument();
+  });
 
-        expect(screen.queryAllByTestId("city").length).toEqual(4);
-    })
+  it("should contain list of cities passed as prop", () => {
+    const cities = [
+      {
+        id: 1,
+      },
+      {
+        id: 2,
+      },
+      {
+        id: 3,
+      },
+      {
+        id: 4,
+      },
+    ];
+    render(
+      <Provider store={store}>
+        <Router>
+          <ListSection cities={cities} />
+        </Router>
+      </Provider>
+    );
+
+    expect(screen.queryAllByTestId("city-mock").length).toEqual(4);
+  });
 });
-    

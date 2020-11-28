@@ -22,21 +22,19 @@ const UnitSwitch = () => {
     },
   ];
 
-  const {storeValue: saveToLocalStorage} = useLocalStorage(KEY_TEMPERATURE_UNIT)
+  const { storeValue: saveToLocalStorage } = useLocalStorage(
+    KEY_TEMPERATURE_UNIT
+  );
   const dispatch = useDispatch();
-  const handleSwitch = (identifier) =>
-  {
-    if(identifier !== value) {
+  const handleSwitch = (identifier) => {
+    if (identifier !== value) {
       dispatch({ type: SWITCH_TEMPERATURE_UNITS });
-      saveToLocalStorage(identifier)
+      saveToLocalStorage(identifier);
     }
-  }
+  };
 
   return (
-    <div
-      data-testid="unit-switch"
-      className={styles._}
-    >
+    <div data-testid="unit-switch" className={styles._}>
       {switches.map((swtch) => (
         <button
           key={swtch.identifier}

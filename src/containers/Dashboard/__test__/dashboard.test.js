@@ -1,20 +1,22 @@
-import { cleanup, render, screen } from '@testing-library/react';
-import Dashboard from '..';
+import { cleanup, render, screen } from "@testing-library/react";
+import Dashboard from "..";
 
-describe('Dashboard', ()=>{
+jest.mock("../../../redux");
+jest.mock("../../Body");
+jest.mock("../../../components/Header");
 
-    afterEach(cleanup);
+describe("Dashboard", () => {
+  afterEach(cleanup);
 
-    it('should render dashboard', ()=>{
-        render(<Dashboard/>);
-        const dashboard = screen.queryByTestId("dashboard");
-        expect(dashboard).toBeInTheDocument();
-    })
+  it("should render dashboard", () => {
+    render(<Dashboard />);
+    const dashboard = screen.queryByTestId("dashboard");
+    expect(dashboard).toBeInTheDocument();
+  });
 
-    it('should render header', ()=>{
-        render(<Dashboard/>);
-        const header = screen.queryByTestId("header");
-        expect(header).toBeInTheDocument();
-    })
-
-})
+  it("should render header", () => {
+    render(<Dashboard />);
+    const header = screen.queryByTestId("header-mock");
+    expect(header).toBeInTheDocument();
+  });
+});

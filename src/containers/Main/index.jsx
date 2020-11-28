@@ -5,33 +5,17 @@ import {
   SECTION_TITLE_SUGGESTIONS,
 } from "../../utils/constants";
 import ListSection from "../ListSection";
+import useCities from "../../hooks/useCities";
 
 const Main = () => {
+  const { cities: allCities } = useCities();
   const cities = {
-    [SECTION_TITLE_FAVORITES]: [
-      {
-        id: 1,
-        name: "Lagos, Nigeria",
-        temperature: 20,
-      },
-      {
-        id: 2,
-        name: "Lagos, Nigeria",
-        temperature: 40,
-      },
-      {
-        id: 4,
-        name: "Lagos, Nigeria",
-        temperature: -3,
-      },
-    ],
-    [SECTION_TITLE_SUGGESTIONS]: [
-      {
-        id: 3,
-        name: "Berlin, Germany",
-        temperature: -0,
-      },
-    ],
+    [SECTION_TITLE_FAVORITES]: allCities
+      ? allCities.filter((city) => city.category == SECTION_TITLE_FAVORITES)
+      : [],
+    [SECTION_TITLE_SUGGESTIONS]: allCities
+      ? allCities.filter((city) => city.category == SECTION_TITLE_SUGGESTIONS)
+      : [],
   };
   const sections = [
     {
@@ -69,6 +53,7 @@ const Main = () => {
       ),
     },
   ];
+
   return (
     <div data-testid="main" className={styles._}>
       {sections.map(
@@ -76,6 +61,7 @@ const Main = () => {
           (section.title in cities ||
             section.title === SECTION_TITLE_FAVORITES) && (
             <ListSection
+              key={section.title}
               title={section.title}
               icon={section.icon}
               cities={cities[section.title]}

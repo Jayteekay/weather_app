@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Results from "./Results";
 import styles from "./search.module.scss";
+import useFetch from "../../hooks/useFetch";
+import { GET_AUTOCOMPLETE } from "../../utils/endpoints";
 
 const Search = () => {
   const [value, setValue] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  const { success, error, isLoading, dispatchFetch } = useFetch(GET_AUTOCOMPLETE);
   const handleInput = (e) => {
     setValue(e.target.value);
   };
+  const resetQuery = () => {
+    setValue("");
+  };
+  useEffect(() => {
+    success && setIsError(false);
+  }, [success]);
+  useEffect(() => {
+    error && setIsError(true);
+  }, [error]);
+  useEffect(() => {
+    if (value) {
+      const performSearch = setTimeout(() => dispatchFetch(value), 1000);
+      return () => clearTimeout(performSearch);
+    }
+  }, [value]);
   return (
     <div
       data-testid="search"
@@ -18,7 +39,17 @@ const Search = () => {
           value={value}
         />
         {value ? (
-          <div data-testid="results" className={styles.__results}></div>
+          <div data-testid="results" className={styles.__results}>
+            {!isError ? (
+              <Results
+                resetQuery={resetQuery}
+                results={isLoading ? [] : success?.results || []}
+                isLoading={isLoading}
+              />
+            ) : (
+              <p>Unable to fetch result</p>
+            )}
+          </div>
         ) : (
           <div data-testid="icon" className={styles.__icon}>
             <svg

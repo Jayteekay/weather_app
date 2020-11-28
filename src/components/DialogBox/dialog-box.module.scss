@@ -1,0 +1,25 @@
+._ {
+  max-width: 30rem;
+  background: var(--white);
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  > p {
+    padding: 2rem 1rem;
+  }
+  &_buttons {
+    border-top: 1px solid var(--gray);
+    display: flex;
+  }
+  &_positive {
+    height: 3rem;
+    color: var(--green);
+    flex: 1;
+  }
+  &_negative {
+    height: 3rem;
+    color: var(--red);
+    flex: 1;
+  }
+}

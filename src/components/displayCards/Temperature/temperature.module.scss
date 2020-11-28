@@ -1,0 +1,27 @@
+._ {
+  padding: 1rem;
+  width: 9rem;
+  height: 6rem;
+  display: grid;
+  grid: "ticon value" 1fr "description value" 1fr / auto 1fr;
+  row-gap: 0.2rem;
+  column-gap: 0.5rem;
+  > svg {
+    grid-area: ticon;
+    align-self: flex-end;
+    justify-self: center;
+  }
+  &_description {
+    grid-area: description;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+  &_value {
+    grid-area: value;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+  }
+}

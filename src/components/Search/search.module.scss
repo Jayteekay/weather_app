@@ -1,50 +1,53 @@
-._{
+._ {
+  width: 100%;
+  height: 3rem;
+  @media (min-width: 768px) {
+    width: 300px;
+  }
+  &_container {
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    position: relative;
     width: 100%;
-    height: 3rem;
-    @media (min-width: 768px){
-        width: 300px;
+    min-height: 100%;
+  }
+  input {
+    flex: 1;
+    border-radius: 1rem;
+    line-height: 1rem;
+    font-size: 1rem;
+    transition: border-radius 0.3s ease-out;
+    &::placeholder {
+      color: var(--black);
     }
-    &_container{
-        box-shadow: var(--box-shadow);
-        display: flex;
-        flex-direction: column;
-        border-radius: 1rem;
-        position: relative;
-        width: 100%;
-        min-height: 100%;
+  }
+  &_icon {
+    background: var(--black);
+    height: 48px;
+    width: 48px;
+    border-radius: 1rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &_results {
+    flex: 1;
+    padding: 1rem;
+    background: var(--white);
+    border-radius: 0 0 1rem 1rem;
+    &__container {
+      display: flex;
+      flex-direction: column;
     }
-    input{
-        flex: 1;
-        border-radius: 1rem;
-        line-height: 1rem;
-        font-size: 1rem;
-        transition: border-radius 0.3s ease-out;
-        &::placeholder{
-            color: var(--black);
-        }
-    }
-    &_icon{
-        background: var(--black);
-        height: 48px;
-        width: 48px;
-        border-radius: 1rem;
-        position: absolute;
-        top: 0;
-        right: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    &_results{
-        flex: 1;
-        padding: 1rem;
-        background: var(--white);
-        border-radius: 0 0 1rem 1rem;
-    }
+  }
 }
-:global .typing{
-    >input{
-        border-radius: 1rem 1rem 0 0;
-    }
-
+:global .typing {
+  > input {
+    border-radius: 1rem 1rem 0 0;
+  }
 }

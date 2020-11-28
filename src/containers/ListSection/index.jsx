@@ -14,9 +14,12 @@ const ListSection = ({ title, icon, cities }) => {
           cities.map((city) => (
             <City
               key={city.id}
-              id={city.id}
+              category={city.category}
               name={city.name}
+              country={city.country}
               temperature={city.temperature}
+              last_updated={city.localtime}
+              utc_offset={city.utc_offset}
             />
           ))
         ) : (

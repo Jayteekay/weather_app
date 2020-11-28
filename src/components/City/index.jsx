@@ -1,14 +1,41 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Card from "../../elements/Card";
-import { TEMPERATURE_UNIT_CELCIUS, TEMPERATURE_UNIT_FAHRENHEIT } from "../../utils/constants";
-import { classifyTemperature } from "../../utils/functions";
+import useCities from "../../hooks/useCities";
+import useFetch from "../../hooks/useFetch";
+import { GET_CITY_SUCCESSFUL } from "../../redux/actions/types";
+import {
+  SECTION_TITLE_FAVORITES,
+  SECTION_TITLE_SUGGESTIONS,
+  TEMPERATURE_UNIT_CELCIUS,
+  TEMPERATURE_UNIT_FAHRENHEIT,
+} from "../../utils/constants";
+import { GET_CITY_DATA, GET_CITY_DATA_WITH_QUERY } from "../../utils/endpoints";
+import {
+  classifyTemperature,
+  convertTemperature,
+  utcMinutesAgo,
+} from "../../utils/functions";
 import styles from "./city.module.scss";
 
-const City = ({ temperature, id, name }) => {
-  const temperatureClassification = classifyTemperature(temperature);
+const City = ({
+  temperature,
+  name,
+  country,
+  category,
+  last_updated,
+  utc_offset,
+}) => {
+  const dispatch = useDispatch();
   const unit = useSelector((state) => state.temperatureUnit);
+  const { update, trash } = useCities();
+  const { success, dispatchFetch } = useFetch(
+    `${GET_CITY_DATA_WITH_QUERY}${name}`
+  );
+
+  const temperatureClassification = classifyTemperature(temperature);
+
   const switches = [
     {
       title: <>&#8451;</>,
@@ -19,9 +46,40 @@ const City = ({ temperature, id, name }) => {
       identifier: TEMPERATURE_UNIT_FAHRENHEIT,
     },
   ];
+  const currentUnit = switches.find((swtch) => swtch.identifier === unit);
+
+  const difference = utcMinutesAgo(last_updated, utc_offset);
+
+  const trashCity = (e) => {
+    e.preventDefault();
+    trash({ name, country });
+  };
+  const addToFavourites = (e) => {
+    e.preventDefault();
+    category === SECTION_TITLE_SUGGESTIONS &&
+      update({ name, country, category: SECTION_TITLE_FAVORITES });
+  };
+
+  useEffect(() => {
+    (!last_updated || difference > 15) && dispatchFetch();
+  }, []);
+
+  useEffect(() => {
+    if (success) {
+      dispatch({
+        type: GET_CITY_SUCCESSFUL,
+        payload: { ...success.location, ...success.current, category },
+      });
+      update({
+        ...success.location,
+        ...success.current,
+        category,
+      });
+    }
+  }, [success]);
 
   return (
-    <Link data-testId="city">
+    <Link data-testid="city_card" to={`/details/${country}/${name}`}>
       <Card
         style={
           temperatureClassification
@@ -49,7 +107,7 @@ const City = ({ temperature, id, name }) => {
           />
         </svg>
         <div className={styles.__actions}>
-          <button>
+          <button onClick={trashCity}>
             <svg
               width="14"
               height="14"
@@ -63,25 +121,38 @@ const City = ({ temperature, id, name }) => {
               />
             </svg>
           </button>
-          <button>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 0.5C10.1858 0.499914 10.368 0.55161 10.5261 0.649289C10.6842 0.746969 10.8119 0.886767 10.895 1.053L13.473 6.211L19.144 7.035C19.3287 7.06182 19.5022 7.1398 19.6449 7.2601C19.7876 7.38041 19.8938 7.53825 19.9514 7.71576C20.009 7.89327 20.0159 8.08337 19.9711 8.26456C19.9263 8.44574 19.8317 8.61078 19.698 8.741L15.571 12.765L16.499 18.439C16.5288 18.6227 16.5068 18.811 16.4354 18.9829C16.364 19.1547 16.2461 19.3032 16.0949 19.4117C15.9437 19.5202 15.7653 19.5843 15.5796 19.5969C15.3939 19.6095 15.2085 19.5701 15.044 19.483L10 16.807L4.956 19.483C4.79155 19.5701 4.60606 19.6095 4.4204 19.5969C4.23475 19.5843 4.05629 19.5202 3.9051 19.4117C3.75391 19.3032 3.63599 19.1547 3.5646 18.9829C3.49321 18.811 3.47118 18.6227 3.501 18.439L4.429 12.765L0.302 8.741C0.168297 8.61078 0.0737039 8.44574 0.0289223 8.26456C-0.0158593 8.08337 -0.00904225 7.89327 0.0486023 7.71576C0.106247 7.53825 0.212418 7.38041 0.355105 7.2601C0.497792 7.1398 0.6713 7.06182 0.856 7.035L6.526 6.211L9.106 1.053C9.18899 0.886919 9.31658 0.747222 9.47447 0.649552C9.63237 0.551883 9.81434 0.500099 10 0.5ZM10 3.736L8.082 7.572C8.01002 7.71626 7.90422 7.84099 7.77363 7.93553C7.64304 8.03008 7.49153 8.09165 7.332 8.115L3.148 8.723L6.198 11.696C6.31326 11.8083 6.39972 11.9468 6.45003 12.0996C6.50035 12.2525 6.51303 12.4152 6.487 12.574L5.8 16.771L9.531 14.791C9.67543 14.7143 9.83647 14.6742 10 14.6742C10.1635 14.6742 10.3246 14.7143 10.469 14.791L14.2 16.771L13.513 12.574C13.4871 12.4154 13.4999 12.2528 13.5502 12.1001C13.6005 11.9475 13.6869 11.8092 13.802 11.697L16.852 8.723L12.669 8.115C12.5095 8.09165 12.358 8.03008 12.2274 7.93553C12.0968 7.84099 11.991 7.71626 11.919 7.572L10 3.736Z"
-                fillRule="nonzero"
-                fill="#9E9E9E"
-              />
-            </svg>
-          </button>
+          {category == SECTION_TITLE_SUGGESTIONS && (
+            <button onClick={addToFavourites}>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 0.5C10.1858 0.499914 10.368 0.55161 10.5261 0.649289C10.6842 0.746969 10.8119 0.886767 10.895 1.053L13.473 6.211L19.144 7.035C19.3287 7.06182 19.5022 7.1398 19.6449 7.2601C19.7876 7.38041 19.8938 7.53825 19.9514 7.71576C20.009 7.89327 20.0159 8.08337 19.9711 8.26456C19.9263 8.44574 19.8317 8.61078 19.698 8.741L15.571 12.765L16.499 18.439C16.5288 18.6227 16.5068 18.811 16.4354 18.9829C16.364 19.1547 16.2461 19.3032 16.0949 19.4117C15.9437 19.5202 15.7653 19.5843 15.5796 19.5969C15.3939 19.6095 15.2085 19.5701 15.044 19.483L10 16.807L4.956 19.483C4.79155 19.5701 4.60606 19.6095 4.4204 19.5969C4.23475 19.5843 4.05629 19.5202 3.9051 19.4117C3.75391 19.3032 3.63599 19.1547 3.5646 18.9829C3.49321 18.811 3.47118 18.6227 3.501 18.439L4.429 12.765L0.302 8.741C0.168297 8.61078 0.0737039 8.44574 0.0289223 8.26456C-0.0158593 8.08337 -0.00904225 7.89327 0.0486023 7.71576C0.106247 7.53825 0.212418 7.38041 0.355105 7.2601C0.497792 7.1398 0.6713 7.06182 0.856 7.035L6.526 6.211L9.106 1.053C9.18899 0.886919 9.31658 0.747222 9.47447 0.649552C9.63237 0.551883 9.81434 0.500099 10 0.5ZM10 3.736L8.082 7.572C8.01002 7.71626 7.90422 7.84099 7.77363 7.93553C7.64304 8.03008 7.49153 8.09165 7.332 8.115L3.148 8.723L6.198 11.696C6.31326 11.8083 6.39972 11.9468 6.45003 12.0996C6.50035 12.2525 6.51303 12.4152 6.487 12.574L5.8 16.771L9.531 14.791C9.67543 14.7143 9.83647 14.6742 10 14.6742C10.1635 14.6742 10.3246 14.7143 10.469 14.791L14.2 16.771L13.513 12.574C13.4871 12.4154 13.4999 12.2528 13.5502 12.1001C13.6005 11.9475 13.6869 11.8092 13.802 11.697L16.852 8.723L12.669 8.115C12.5095 8.09165 12.358 8.03008 12.2274 7.93553C12.0968 7.84099 11.991 7.71626 11.919 7.572L10 3.736Z"
+                  fillRule="nonzero"
+                  fill="#9E9E9E"
+                />
+              </svg>
+            </button>
+          )}
         </div>
 
-        <span className={styles.__value}>{temperature === 0 || temperature ?<>{temperature}{switches.find(swtch=>swtch.identifier == unit)?.title}</> : "N/A"}</span>
-        <h4 className={styles.__name}>{name}</h4>
+        <span className={styles.__value}>
+          {temperature === 0 || temperature ? (
+            <>
+              {convertTemperature(temperature, unit)}
+              {currentUnit?.title}
+            </>
+          ) : (
+            "N/A"
+          )}
+        </span>
+        <h4 className={styles.__name}>
+          {name}, {country}
+        </h4>
       </Card>
     </Link>
   );
