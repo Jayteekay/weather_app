@@ -15,5 +15,9 @@ the list on the home screen.
 
 ### Screenshots
 
+![Screenshot 1](./public/screenshots/weather-app-1.png)
+![Screenshot 2](./public/screenshots/weather-app-2.png)
+![Screenshot 3](./public/screenshots/weather-app-3.png)
+![Screenshot 4](./public/screenshots/weather-app-4.png)
 
 [Weatherstack api]: <https://weatherstack.com>
