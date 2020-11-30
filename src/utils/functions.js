@@ -1,6 +1,7 @@
 import {
   TEMPERATURE_COLD_VALUE,
   TEMPERATURE_HOT_VALUE,
+  TEMPERATURE_UNIT_CELCIUS,
   TEMPERATURE_UNIT_FAHRENHEIT,
 } from "./constants";
 import moment from "moment";
@@ -33,7 +34,7 @@ export const classifyTemperature = (value) => {
   }
   return null;
 };
-export const convertTemperature = (value, unit) => {
+export const convertTemperature = (value, unit=TEMPERATURE_UNIT_CELCIUS) => {
   if (unit === TEMPERATURE_UNIT_FAHRENHEIT) {
     return (value * 9) / 5 + 32;
   } else {
