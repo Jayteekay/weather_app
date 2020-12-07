@@ -1,14 +1,16 @@
+import { LOCAL_STORAGE_PREFIX } from "../../utils/constants";
 import {
   DELETE_CITY_SUCCESSFUL,
   GET_ALL_CITIES_SUCCESSFUL,
   GET_CITY_SUCCESSFUL,
 } from "../actions/types";
 
+const currentCity = localStorage.getItem(LOCAL_STORAGE_PREFIX + "current_location");
+
 const initialState = {
   data: [],
   isLatestData: false,
-  // isFetchingFromWeb: false,
-  // error: null
+  currentCity: currentCity && JSON.parse(currentCity)
 };
 
 const reducer = (state = initialState, action) => {

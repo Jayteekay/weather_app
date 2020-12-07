@@ -5,7 +5,7 @@ import styles from "./search.module.scss";
 const Results = ({ results, isLoading, resetQuery }) => {
   return (
     <div className={styles.__results__container}>
-      {isLoading && <p>...Fetching results</p>}
+      {isLoading && <p>Fetching results...</p>}
       {results?.map((result) => (
         <Link
           onClick={resetQuery}

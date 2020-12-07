@@ -1,9 +1,11 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import Dashboard from "..";
 
+jest.mock("../../../utils/asset-vectors-loader");
 jest.mock("../../../redux");
 jest.mock("../../Body");
 jest.mock("../../../components/Header");
+jest.mock("../../../elements/Prompt");
 
 describe("Dashboard", () => {
   afterEach(cleanup);

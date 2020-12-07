@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Results from "./Results";
 import styles from "./search.module.scss";
 import useFetch from "../../hooks/useFetch";
@@ -7,8 +7,12 @@ import { GET_AUTOCOMPLETE } from "../../utils/endpoints";
 const Search = () => {
   const [value, setValue] = useState("");
   const [isError, setIsError] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const searchRef = useRef();
 
-  const { success, error, isLoading, dispatchFetch } = useFetch(GET_AUTOCOMPLETE);
+  const { success, error, isLoading, dispatchFetch } = useFetch(
+    GET_AUTOCOMPLETE
+  );
   const handleInput = (e) => {
     setValue(e.target.value);
   };
@@ -22,14 +26,32 @@ const Search = () => {
     error && setIsError(true);
   }, [error]);
   useEffect(() => {
-    if (value) {
-      const performSearch = setTimeout(() => dispatchFetch(value), 1000);
+    if (value && value.length >= 4) {
+      const performSearch = setTimeout(() => dispatchFetch(value), 250);
       return () => clearTimeout(performSearch);
     }
   }, [value]);
+
+  useEffect(() => {
+    if (searchRef.current) {
+      function handleClickOutside(event) {
+        if (!searchRef.current.contains(event.target)) {
+          setIsFocused(false);
+        }else{
+          setIsFocused(true);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [searchRef]);
+
   return (
     <div
       data-testid="search"
+      ref={searchRef}
       className={`${styles._} ${value ? "typing" : ""}`}
     >
       <div className={styles.__container}>
@@ -38,7 +60,7 @@ const Search = () => {
           onChange={handleInput}
           value={value}
         />
-        {value ? (
+        {value && isFocused ? (
           <div data-testid="results" className={styles.__results}>
             {!isError ? (
               <Results

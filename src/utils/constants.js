@@ -9,10 +9,14 @@ export const TEMPERATURE_WARM = "TEMPERATURE_WARM";
 export const TEMPERATURE_HOT = "TEMPERATURE_HOT";
 export const TEMPERATURE_HOT_VALUE = 26;
 
+export const PROMPT_TYPE_POSITIVE = "PROMPT_TYPE_POSITIVE";
+export const PROMPT_TYPE_NEGATIVE = "PROMPT_TYPE_NEGATIVE";
+
 export const LOCAL_STORAGE_PREFIX = "weather_app_v1__";
 export const INDEXED_DB_NAME = "weather_app_v1_db";
 
 export const SECTION_TITLE_FAVORITES = "Favorites";
+export const SECTION_TITLE_CURRENT = "Current";
 export const SECTION_TITLE_SUGGESTIONS = "Suggestions";
 
 export const TOP_CITIES = [

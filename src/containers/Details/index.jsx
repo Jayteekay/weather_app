@@ -18,7 +18,7 @@ const Details = ({ match }) => {
     state.cities.data.find((c) => c.name === city && c.country === country)
   );
   const dispatch = useDispatch();
-  const { update } = useCities();
+  const { update, currentCity } = useCities();
   const { success, isLoading, dispatchFetch } = useFetch(
     `current?access_key=0b30ec9e56f6561561c2d469cdf3286f&query=${city},${country}`
   );
@@ -41,13 +41,13 @@ const Details = ({ match }) => {
     });
   };
 
-  const addAsFavourite = (e) => {
-    e.preventDefault();
+  const addAsFavourite = () => {
     update({ ...data, category: SECTION_TITLE_FAVORITES });
   };
 
   useEffect(() => {
-    if (success && savedData) {
+    const isCurrentCity = currentCity?.city === success?.location.name && currentCity?.country === success?.location.country;
+    if (success && (savedData || isCurrentCity)) {
       dispatch({
         type: GET_CITY_SUCCESSFUL,
         payload: { ...success.location, ...success.current },
@@ -74,7 +74,7 @@ const Details = ({ match }) => {
       </div>
       <div data-testid="details-actions" className={styles.__actions}>
         {savedData?.category !== SECTION_TITLE_FAVORITES && (
-          <button onClick={addAsFavourite}> + Add to Favourites</button>
+          <button type="button" onClick={addAsFavourite}> + Add to Favourites</button>
         )}
       </div>
       <div data-testid="details-body" className={styles.__details}>

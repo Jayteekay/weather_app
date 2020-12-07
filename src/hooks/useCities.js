@@ -16,7 +16,7 @@ import { sortCities } from "../utils/functions.js";
 const useCities = () => {
   const [isDatabaseUpgraded, setIsDatabaseUpgraded] = useState(false);
   const [database, setDatabase] = useState(null);
-  const cities = useSelector((state) => state.cities.data);
+  const {data: cities, currentCity} = useSelector((state) => state.cities);
 
   const dispatch = useDispatch();
 
@@ -88,7 +88,7 @@ const useCities = () => {
     }
   }, [isDatabaseUpgraded]);
 
-  return { update, trash, cities };
+  return { update, trash, cities, currentCity };
 };
 
 export default useCities;

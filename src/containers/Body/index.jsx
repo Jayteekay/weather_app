@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import styles from "./body.module.scss";
 import Main from "../Main";
@@ -6,15 +6,29 @@ import Details from "../Details";
 import useFetch from "../../hooks/useFetch";
 import DialogBox from "../../components/DialogBox";
 import { GET_CITY_DATA } from "../../utils/endpoints";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import { useSelector } from "react-redux";
+import Prompt from "../../elements/Prompt";
+import { PROMPT_TYPE_POSITIVE } from "../../utils/constants";
 
 const Body = () => {
   const history = useHistory();
-  const [isDialogOpen, setIsDialogOpen] = useState(true);
+  const currentCity = useSelector((state) => state.cities.currentCity);
+  const [showCityPrompt, setShowCityPrompt] = useState(true);
+  const { storeValue: storeCurrentLocation } = useLocalStorage(
+    "current_location"
+  );
+  const [isDialogOpen, setIsDialogOpen] = useState(!currentCity);
   const [requestingPermission, setRequestingPermission] = useState(false);
   const handleNegative = () => {
     setIsDialogOpen(false);
   };
-  const { success: city, error, isLoading, dispatchFetch: getCity } = useFetch(GET_CITY_DATA);
+  const removeCityPrompt = () => {
+    setShowCityPrompt(false);
+  };
+  const { success: city, error, isLoading, dispatchFetch: getCity } = useFetch(
+    GET_CITY_DATA
+  );
   const handlePositive = () => {
     const showPosition = (value) => {
       setRequestingPermission(false);
@@ -30,9 +44,18 @@ const Body = () => {
     }
   };
 
+  const openCurrentCity = useCallback(() => {
+    setShowCityPrompt(false);
+    history.push(`/details/${currentCity.country}/${currentCity.city}`)
+  }, [currentCity])
+
   useEffect(() => {
     if (city) {
       setIsDialogOpen(false);
+      storeCurrentLocation({
+        city: city.location.name,
+        country: city.location.country,
+      });
       history.push(`/details/${city.location.country}/${city.location.name}`);
     } else if (error) {
       setIsDialogOpen(false);
@@ -48,6 +71,16 @@ const Body = () => {
           <Redirect to="/" />
         </Route>
       </Switch>
+      {currentCity && showCityPrompt && (
+        <Prompt
+          type={PROMPT_TYPE_POSITIVE}
+          onClose={removeCityPrompt}
+          message={`Your current city is set to ${currentCity.city}, ${currentCity.country}`}
+          onAccept={openCurrentCity}
+          acceptMessage = "Open Details"
+          duration={10000}
+        />
+      )}
       {isDialogOpen && (
         <div className={styles.__dialog}>
           {!isLoading ? (
