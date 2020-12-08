@@ -19,7 +19,8 @@
     flex: 1;
     align-self: stretch;
     display: grid;
-    place-content: center;
+    align-items: center;
+    justify-content: center;
     grid-template-columns: repeat(auto-fit, 200px);
     gap: 1rem;
     h4 {

@@ -15,7 +15,7 @@ const Prompt = ({ message, type = PROMPT_TYPE_POSITIVE, onClose, onAccept, accep
   },[])
   return createPortal(
     <div className={type === PROMPT_TYPE_NEGATIVE ? styles._negative : styles._positive}>
-      <button onClick={onClose}>
+      <button data-testid="prompt-close" onClick={onClose}>
         <svg
           width="12"
           height="11"
