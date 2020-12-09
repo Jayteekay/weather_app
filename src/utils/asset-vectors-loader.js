@@ -1,5 +1,3 @@
-// const vectors = importAll(require.context('../assets/vectors', false, /\.(svg)$/));
-
 const importAll = (r) => {
   let images = {};
   r.keys().map((item) => {

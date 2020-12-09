@@ -59,4 +59,25 @@ describe("Prompt", () => {
     userEvent.click(acceptButton);
     await waitFor(() => expect(onAccept).toHaveBeenCalledTimes(1));
   });
+  it("should call onClose after duration has passed given duration as props", async () => {
+    const message = "test";
+    const acceptMessage = "Accept";
+    const onAccept= jest.fn();
+    const onClose = jest.fn();
+    const duration = 1000;
+
+    jest.useFakeTimers();
+
+    render(<div id="promptContainer"></div>);
+    render(
+      <>
+        <div id="promptContainer"></div>
+        <Prompt message={message} onClose={onClose} acceptMessage={acceptMessage} onAccept={onAccept} duration={duration}/>
+      </>
+    );
+
+    expect(onClose).not.toHaveBeenCalled();
+    await waitFor(() => jest.runAllTimers());
+    await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1));
+  });
 });
