@@ -27,7 +27,7 @@ jobs:
       # Step 3: Install the sprungg-code-mapper package
       - name: Install sprungg-code-mapper
         run: |
-          npm install @sprungg/code-mapper
+          npm install -g @sprungg/code-mapper
 
       # Step 4: Generate Codemap data using sprungg-code-mapper CLI
       - name: Generate Codemap Data
