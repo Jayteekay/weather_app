@@ -33,7 +33,7 @@ jobs:
       - name: Generate Codemap Data
         run: |
           # Generate data and save it to mapper-output.json
-          npx @sprungg/code-mapper . json mapper-output.json
+          npx @sprungg/code-mapper --git --format json -o mapper-output.json
 
       - name: Print JSON output for debugging
         run: |
