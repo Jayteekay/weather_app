@@ -1,5 +1,6 @@
 # Weather app
 ### Overview
+
 A web application that fetches weather and displays weather details of cities. It allows users to look up current weather information for cities around the world and add cities to a “favorites” list.
 ### Features
 - Uses [Weatherstack Api] to get real time weather information
